@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Data.SqlTypes;
 
 namespace BAI
 {
@@ -8,28 +8,71 @@ namespace BAI
     {
         public static bool Vooruit(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return false;
+
+            if (b >> 7 == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static uint Vermogen(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return 0;
+            if ((b & (1 << 5)) == 0 && (b & (1 << 6)) == 0)
+            {
+                return 0;
+            }
+            else if ((b & (1 << 5)) != 0 && (b & (1 << 6)) == 0)
+            {
+                return 33;
+            }
+            else if ((b & (1 << 5)) == 0 && (b & (1 << 6)) != 0)
+            {
+                return 67;
+            }
+            else if ((b & (1 << 5)) != 0 && (b & (1 << 6)) != 0)
+            {
+                return 100;
+            } else
+            {
+                return 0;
+            }
+
         }
         public static bool Wagon(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return false;
+            if ((b & (1 << 4)) != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static bool Licht(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return false;
+            if ((b & (1 << 3)) != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static uint ID(uint b)
         {
-            // *** IMPLEMENTATION HERE *** //
-            return 0;
+            uint Result = 0;
+
+            Result = b << 29;
+            Result = Result >> 29;
+            Console.WriteLine(Result + " hallo");
+
+            return Result;
+
         }
 
         public static HashSet<uint> Alle(List<uint> inputStroom)
@@ -101,7 +144,7 @@ namespace BAI
             ToonInfo(210);
             Console.WriteLine();
 
-            List<uint> inputStroom = GetInputStroom();
+           /* List<uint> inputStroom = GetInputStroom();
 
             Console.WriteLine("=== Opgave 2 ===");
             HashSet<uint> alle = Alle(inputStroom);
@@ -130,7 +173,7 @@ namespace BAI
             {
                 ToonInfo(b);
             }
-            Console.WriteLine();
+            Console.WriteLine();*/
         }
     }
 }
