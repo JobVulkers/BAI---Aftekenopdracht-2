@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Net.NetworkInformation;
 
 namespace BAI
 {
@@ -66,10 +67,8 @@ namespace BAI
         public static uint ID(uint b)
         {
             uint Result = 0;
-
             Result = b << 29;
             Result = Result >> 29;
-            Console.WriteLine(Result + " hallo");
 
             return Result;
 
@@ -78,39 +77,77 @@ namespace BAI
         public static HashSet<uint> Alle(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+
+            for(int i = 0; i < inputStroom.Count; i++)
+            {
+                set.Add(inputStroom[i]);
+            }
             return set;
         }
         public static HashSet<uint> ZonderLicht(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+            for (int i = 0; i < inputStroom.Count; i++)
+            {
+                if (!Licht(inputStroom[i]))
+                {
+                    set.Add(inputStroom[i]);
+                }
+            }
             return set;
         }
         public static HashSet<uint> MetWagon(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+            for (int i = 0; i < inputStroom.Count; i++)
+            {
+                if (Wagon(inputStroom[i]))
+                {
+                    set.Add(inputStroom[i]);
+                }
+            }
             return set;
         }
         public static HashSet<uint> SelecteerID(List<uint> inputStroom, uint lower, uint upper)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+            for (int i = 0; i < inputStroom.Count; i++)
+            {
+                if (ID(inputStroom[i]) >= lower && ID(inputStroom[i]) <= upper)
+                {
+                    
+                    set.Add(inputStroom[i]);
+                }
+            }
             return set;
         }
 
         public static HashSet<uint> Opg3a(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+            int i = 0;
+            while (i< inputStroom.Count){
+
+
+            }
+            /*for (int i = 0; i < inputStroom.Count; i++)
+            {
+                if (!Licht(inputStroom[i])&& ID(inputStroom[i]) < 3 )
+                {
+
+                    set.Add(inputStroom[i]);
+                }
+            }*/
             return set;
         }
 
         public static HashSet<uint> Opg3b(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            // *** IMPLEMENTATION HERE *** //
+            Opg3a(inputStroom);
+            set = Alle(Opg3a);
+            
+          
             return set;
         }
 
@@ -144,7 +181,7 @@ namespace BAI
             ToonInfo(210);
             Console.WriteLine();
 
-           /* List<uint> inputStroom = GetInputStroom();
+            List<uint> inputStroom = GetInputStroom();
 
             Console.WriteLine("=== Opgave 2 ===");
             HashSet<uint> alle = Alle(inputStroom);
@@ -173,7 +210,7 @@ namespace BAI
             {
                 ToonInfo(b);
             }
-            Console.WriteLine();*/
+            Console.WriteLine();
         }
     }
 }
