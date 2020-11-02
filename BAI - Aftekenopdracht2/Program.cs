@@ -10,13 +10,13 @@ namespace BAI
     {
         public static bool Vooruit(uint b)
         {
-            if ((b & 0b1000000) == 1)
+            if (((b >> 7) & 1) == 1)
             {
                 return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
         public static uint Vermogen(uint b)
@@ -161,27 +161,13 @@ namespace BAI
         public static HashSet<uint> Opg3b(List<uint> inputStroom)
         {
             
-            HashSet<uint> set = new HashSet<uint>();
             HashSet<uint> setAlle = Alle(inputStroom);
             HashSet<uint> setOpg3a = Opg3a(inputStroom);
-            int i = 0;
 
             //Verwijder alle elementen uit op3a (deze moeten volgens de opdracht allemaal 'niét worden geretured
-            setAlle.ExceptWith(setOpg3a);
-
-            while(i < setAlle.Count)
-            {
-                if (Licht(setAlle.ElementAt(i)))
-                {
-                    set.Add(setAlle.ElementAt(i));
-                    i++;
-                }
-                i++;
-
-            }
-            
-            
-            return set;
+            setAlle.ExceptWith(setOpg3a);      
+           
+            return setAlle;
         }
 
         public static void ToonInfo(uint b)
