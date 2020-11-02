@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Linq;
 using System.Net.NetworkInformation;
 
 namespace BAI
@@ -9,19 +10,18 @@ namespace BAI
     {
         public static bool Vooruit(uint b)
         {
-
-            if (b >> 7 == 1)
+            if ((b & 0b1000000) == 1)
             {
                 return true;
             }
             else
             {
-                return false;
+                return true;
             }
         }
         public static uint Vermogen(uint b)
         {
-            if ((b & (1 << 5)) == 0 && (b & (1 << 6)) == 0)
+            if ((b & 0b100000) == 0 && (b & 0b1000000) == 0)
             {
                 return 0;
             }
@@ -66,44 +66,55 @@ namespace BAI
         }
         public static uint ID(uint b)
         {
-            uint Result = 0;
-            Result = b << 29;
-            Result = Result >> 29;
-
-            return Result;
+            
+            return (b & 0b111);
 
         }
 
         public static HashSet<uint> Alle(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-
-            for(int i = 0; i < inputStroom.Count; i++)
+            int i = 0;
+            while(i < inputStroom.Count)
             {
                 set.Add(inputStroom[i]);
+                i++;
             }
             return set;
         }
         public static HashSet<uint> ZonderLicht(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            for (int i = 0; i < inputStroom.Count; i++)
+            int i = 0;
+            while(i < inputStroom.Count)
             {
                 if (!Licht(inputStroom[i]))
                 {
                     set.Add(inputStroom[i]);
+                    i++;
                 }
+                else
+                {
+                    i++;
+                }
+
             }
             return set;
         }
         public static HashSet<uint> MetWagon(List<uint> inputStroom)
         {
             HashSet<uint> set = new HashSet<uint>();
-            for (int i = 0; i < inputStroom.Count; i++)
+            int i = 0;
+            while(i < inputStroom.Count)
             {
                 if (Wagon(inputStroom[i]))
                 {
                     set.Add(inputStroom[i]);
+                    i++;
+                }
+                else
+                {
+                    i++;
                 }
             }
             return set;
@@ -111,14 +122,20 @@ namespace BAI
         public static HashSet<uint> SelecteerID(List<uint> inputStroom, uint lower, uint upper)
         {
             HashSet<uint> set = new HashSet<uint>();
-            for (int i = 0; i < inputStroom.Count; i++)
+            int i = 0;
+            while(i < inputStroom.Count)
             {
                 if (ID(inputStroom[i]) >= lower && ID(inputStroom[i]) <= upper)
                 {
-                    
                     set.Add(inputStroom[i]);
+                    i++;
                 }
-            }
+                else
+                {
+                    i++;
+                }
+                
+            }            
             return set;
         }
 
@@ -126,28 +143,44 @@ namespace BAI
         {
             HashSet<uint> set = new HashSet<uint>();
             int i = 0;
-            while (i< inputStroom.Count){
-
-
-            }
-            /*for (int i = 0; i < inputStroom.Count; i++)
+            while(i < inputStroom.Count)
             {
-                if (!Licht(inputStroom[i])&& ID(inputStroom[i]) < 3 )
+                if (!Licht(inputStroom[i]) && ID(inputStroom[i]) < 3)
                 {
-
                     set.Add(inputStroom[i]);
+                    i++;
                 }
-            }*/
+                else
+                {
+                    i++;
+                }
+            }
             return set;
         }
 
         public static HashSet<uint> Opg3b(List<uint> inputStroom)
         {
-            HashSet<uint> set = new HashSet<uint>();
-            Opg3a(inputStroom);
-            set = Alle(Opg3a);
             
-          
+            HashSet<uint> set = new HashSet<uint>();
+            HashSet<uint> setAlle = Alle(inputStroom);
+            HashSet<uint> setOpg3a = Opg3a(inputStroom);
+            int i = 0;
+
+            //Verwijder alle elementen uit op3a (deze moeten volgens de opdracht allemaal 'niét worden geretured
+            setAlle.ExceptWith(setOpg3a);
+
+            while(i < setAlle.Count)
+            {
+                if (Licht(setAlle.ElementAt(i)))
+                {
+                    set.Add(setAlle.ElementAt(i));
+                    i++;
+                }
+                i++;
+
+            }
+            
+            
             return set;
         }
 
